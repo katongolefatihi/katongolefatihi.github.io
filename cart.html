@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart | GetFurniture UG</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; }
+        
+        /* Navigation Menu */
+        .main-nav { background-color: #2c3e50; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 8px 12px; border-radius: 5px; }
+        .nav-links a:hover { background-color: #e74c3c; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 220px; z-index: 100; list-style: none; padding: 0; margin: 0; border-radius: 5px; margin-top: 8px; }
+        .dropdown-content li a { padding: 12px 16px; display: block; border-bottom: 1px solid #2c3e50; }
+        .dropdown:hover .dropdown-content { display: block; }
+        
+        /* Cart Container */
+        .cart-container { max-width: 700px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .cart-item { border-bottom: 1px solid #eee; padding: 15px 0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
+        .cart-item-title { font-weight: bold; color: #2c3e50; }
+        .cart-item-price { color: #e74c3c; font-weight: bold; font-size: 1.1em; }
+        .btn-remove { background-color: #e74c3c; color: white; border: none; border-radius: 3px; padding: 5px 10px; cursor: pointer; font-weight: bold; }
+        .total { font-size: 1.8em; font-weight: bold; text-align: right; margin-top: 20px; color: #2c3e50; }
+        
+        /* Buttons & Modal */
+        .btn-checkout { background-color: #25D366; color: white; padding: 15px; border: none; width: 100%; border-radius: 5px; font-weight: bold; font-size: 1.2em; margin-top: 20px; cursor: pointer; transition: background 0.3s; }
+        .btn-checkout:hover { background-color: #20b858; }
+        .btn-empty { background-color: #7f8c8d; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; }
+        
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); }
+        .modal-content { background-color: #fff; margin: 10% auto; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px; position: relative; }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .payment-options { display: flex; gap: 10px; margin-top: 20px; }
+        .pay-btn { flex: 1; padding: 15px 10px; border: none; border-radius: 5px; font-weight: bold; color: white; cursor: pointer; font-size: 1em; }
+        .btn-mtn { background-color: #ffcc00; color: #333; }
+        .btn-airtel { background-color: #ff0000; }
+        .btn-bank { background-color: #3498db; }
+        .payment-instructions { display: none; background: #f4f7f6; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 5px solid #2c3e50; }
+        .payment-instructions input { width: 100%; padding: 12px; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-confirm { background-color: #2c3e50; color: white; padding: 15px; border: none; width: 100%; border-radius: 5px; font-weight: bold; margin-top: 15px; cursor: pointer; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="products.html">Products ▾</a>
+                <ul class="dropdown-content">
+                    <li><a href="home-furniture.html">Home Furniture</a></li>
+                    <li><a href="office-furniture.html">Office Furniture</a></li>
+                    <li><a href="pharmacy.html">Pharmacy</a></li>
+                    <li><a href="school-furniture.html">School Furniture</a></li>
+                </ul>
+            </li>
+            <li><a href="wishlist.html">❤️ Wishlist</a></li>
+            <li><a href="cart.html" style="color: #f1c40f;">🛒 Cart (<span id="cartCount">0</span>)</a></li>
+            <li id="authLink"><a href="login.html" style="color: #3498db;">👤 Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="cart-container">
+        <h2>🛒 Your Shopping Cart</h2>
+        <div id="cartItemsList"></div>
+        <div class="total" id="cartTotalDisplay">Total: UGX 0</div>
+        
+        <button id="checkoutBtn" class="btn-checkout" onclick="openPaymentModal()">Proceed to Payment</button>
+        <button onclick="clearCart()" class="btn-empty">🗑️ Empty Entire Cart</button>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePaymentModal()">&times;</span>
+            <h2 style="margin-top: 0; color: #2c3e50;">Select Payment Method</h2>
+            <p style="font-size: 1.2em;">Total Due: <strong id="modalTotalAmount" style="color: #e74c3c;">UGX 0</strong></p>
+            
+            <div class="payment-options">
+                <button class="pay-btn btn-mtn" onclick="showInstructions('MTN')">MTN MoMo</button>
+                <button class="pay-btn btn-airtel" onclick="showInstructions('Airtel')">Airtel Money</button>
+                <button class="pay-btn btn-bank" onclick="showInstructions('Bank')">Bank</button>
+            </div>
+
+            <div id="instructionBox" class="payment-instructions">
+                <h3 id="payMethodTitle" style="margin-top: 0;">Instructions</h3>
+                <p id="payDetails" style="line-height: 1.5;"></p>
+                <label><strong>Enter your Transaction ID:</strong></label>
+                <input type="text" id="transactionId" placeholder="e.g. 1234567890" required>
+                <button class="btn-confirm" onclick="finalizeOrder()">✅ Confirm & Send Order</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            alert("🔒 Please login to view your Cart.");
+            window.location.href = 'login.html';
+        } else {
+            updateAuthUI();
+            loadCart();
+        }
+    });
+
+    function updateAuthUI() {
+        const currentUser = localStorage.getItem('currentUser');
+        document.getElementById('authLink').innerHTML = `<span style="color: #f1c40f; font-weight: bold; margin-right: 10px;">Hi, ${currentUser}!</span><a href="#" onclick="logout()" style="color: #e74c3c;">(Logout)</a>`;
+    }
+
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    }
+
+    let cartMemory = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+    let grandTotal = 0;
+    let selectedPaymentMethod = "";
+
+    function loadCart() {
+        let cartListDiv = document.getElementById('cartItemsList');
+        let totalDisplay = document.getElementById('cartTotalDisplay');
+        let checkoutBtn = document.getElementById('checkoutBtn');
+        grandTotal = 0;
+        
+        let totalCartItems = cartMemory.reduce((total, item) => total + (item.quantity || 1), 0);
+        document.getElementById('cartCount').innerText = totalCartItems;
+
+        if (cartMemory.length === 0) {
+            cartListDiv.innerHTML = "<p>Your cart is empty.</p>";
+            checkoutBtn.style.display = "none";
+        } else {
+            cartListDiv.innerHTML = "";
+            cartMemory.forEach(function(item, index) {
+                let qty = item.quantity || 1;
+                let lineTotal = item.price * qty;
+                grandTotal += lineTotal;
+                
+                cartListDiv.innerHTML += `
+                    <div class='cart-item'>
+                        <div>
+                            <span class="cart-item-title">${item.name}</span>
+                            <div style="font-size: 0.9em; color: #7f8c8d; margin-top: 5px;">Qty: <strong>${qty}</strong> × UGX ${item.price.toLocaleString('en-US')}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="cart-item-price">UGX ${lineTotal.toLocaleString('en-US')}</span><br>
+                            <button class='btn-remove' style='margin-top: 8px;' onclick='removeItem(${index})'>Remove</button>
+                        </div>
+                    </div>`;
+            });
+            totalDisplay.innerHTML = "Total: UGX " + grandTotal.toLocaleString('en-US');
+            document.getElementById('modalTotalAmount').innerText = "UGX " + grandTotal.toLocaleString('en-US');
+            checkoutBtn.style.display = "block";
+        }
+    }
+
+    function removeItem(index) {
+        cartMemory.splice(index, 1);
+        localStorage.setItem('getFurnitureCart', JSON.stringify(cartMemory));
+        window.location.reload();
+    }
+
+    function clearCart() {
+        localStorage.removeItem('getFurnitureCart');
+        window.location.reload();
+    }
+
+    function openPaymentModal() { document.getElementById('paymentModal').style.display = "block"; }
+    function closePaymentModal() { document.getElementById('paymentModal').style.display = "none"; document.getElementById('instructionBox').style.display = "none"; }
+
+    function showInstructions(method) {
+        selectedPaymentMethod = method;
+        let instructionBox = document.getElementById('instructionBox');
+        instructionBox.style.display = "block";
+        
+        if (method === 'MTN') {
+            document.getElementById('payMethodTitle').innerText = "MTN Mobile Money";
+            document.getElementById('payDetails').innerHTML = "Dial <strong>*165#</strong> and send <strong>UGX " + grandTotal.toLocaleString('en-US') + "</strong> to:<br><br>Number: <strong>0770 000 000</strong><br>Name: <strong>GetFurniture UG</strong>";
+            instructionBox.style.borderLeftColor = "#ffcc00";
+        } else if (method === 'Airtel') {
+            document.getElementById('payMethodTitle').innerText = "Airtel Money";
+            document.getElementById('payDetails').innerHTML = "Dial <strong>*185#</strong> and send <strong>UGX " + grandTotal.toLocaleString('en-US') + "</strong> to:<br><br>Number: <strong>0750 000 000</strong><br>Name: <strong>GetFurniture UG</strong>";
+            instructionBox.style.borderLeftColor = "#ff0000";
+        } else if (method === 'Bank') {
+            document.getElementById('payMethodTitle').innerText = "Bank Transfer";
+            document.getElementById('payDetails').innerHTML = "Transfer <strong>UGX " + grandTotal.toLocaleString('en-US') + "</strong> to:<br><br>Bank: <strong>Stanbic Bank</strong><br>Account: <strong>9030000000000</strong>";
+            instructionBox.style.borderLeftColor = "#3498db";
+        }
+    }
+
+    function finalizeOrder() {
+        let transId = document.getElementById('transactionId').value;
+        let currentUser = localStorage.getItem('currentUser') || "Guest";
+        
+        if (transId.trim() === "") { alert("Please enter your Transaction ID."); return; }
+
+        let orderDetails = "Hello GetFurniture! I have placed an order.\n\n👤 Customer: " + currentUser + "\n💳 Method: " + selectedPaymentMethod + "\n🧾 Trans ID: " + transId + "\n\n🛒 ORDER DETAILS:\n";
+        
+        cartMemory.forEach(function(item) {
+            let q = item.quantity || 1;
+            orderDetails += "- " + item.name + " (Qty: " + q + ") - UGX " + (item.price * q).toLocaleString('en-US') + "\n";
+        });
+        
+        orderDetails += "\n💰 TOTAL PAID: UGX " + grandTotal.toLocaleString('en-US');
+        window.open("https://wa.me/256700000000?text=" + encodeURIComponent(orderDetails), '_blank');
+        closePaymentModal();
+    }
+</script>
+</body>
+</html>

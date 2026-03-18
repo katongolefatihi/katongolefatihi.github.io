@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | GetFurniture UG</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        h2 { color: #2c3e50; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn-login { background: #3498db; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; }
+        .toggle-link { margin-top: 15px; display: block; color: #3498db; text-decoration: none; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<div class="login-box" id="authBox">
+    <h2 id="authTitle">Login</h2>
+    <p id="authDesc">Please log in to view your cart and wishlist.</p>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button class="btn-login" onclick="handleAuth()" id="authBtn">Login</button>
+    <a href="#" class="toggle-link" onclick="toggleMode()" id="toggleBtn">Don't have an account? Register here</a>
+    <br>
+    <a href="index.html" style="color: #7f8c8d; font-size: 0.8em; text-decoration: none;">← Back to Home</a>
+</div>
+
+<script>
+    let isLoginMode = true;
+
+    function toggleMode() {
+        isLoginMode = !isLoginMode;
+        document.getElementById('authTitle').innerText = isLoginMode ? "Login" : "Register";
+        document.getElementById('authBtn').innerText = isLoginMode ? "Login" : "Create Account";
+        document.getElementById('toggleBtn').innerText = isLoginMode ? "Don't have an account? Register here" : "Already have an account? Login here";
+    }
+
+    function handleAuth() {
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+
+        if (!user || !pass) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        if (isLoginMode) {
+            // LOGIN LOGIC
+            const storedPass = localStorage.getItem('user_' + user);
+            if (storedPass && storedPass === pass) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('currentUser', user);
+                alert("Welcome back, " + user + "!");
+                window.location.href = 'cart.html'; // Take them to the cart they wanted
+            } else {
+                alert("Invalid username or password");
+            }
+        } else {
+            // REGISTER LOGIC
+            localStorage.setItem('user_' + user, pass);
+            alert("Account created successfully! Now please login.");
+            toggleMode();
+        }
+    }
+
+function checkAccess(page) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        window.location.href = page;
+    } else {
+        alert("🔒 You must be logged in to view your " + (page.includes('cart') ? "Cart" : "Wishlist") + "!");
+        window.location.href = 'login.html';
+    }
+}
+
+</script>
+</body>
+</html>

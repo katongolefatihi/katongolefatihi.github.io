@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetFurniture UG | Premium Ugandan Furniture</title>
+    <style>
+        /* Base Styles */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; color: #333; overflow-x: hidden; }
+        
+        /* Nav Menu & Search */
+        .main-nav { background-color: #2c3e50; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; align-items: center; }
+        .nav-links a, .nav-links span.click-link { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 8px 12px; border-radius: 5px; transition: background 0.3s ease; cursor: pointer; }
+        .nav-links a:hover, .nav-links span.click-link:hover { background-color: #e74c3c; }
+        .nav-cart { color: #f1c40f !important; }
+        
+        .nav-search { display: flex; align-items: center; background: white; border-radius: 20px; padding: 2px 10px; }
+        .nav-search input { border: none; outline: none; padding: 5px; border-radius: 20px; width: 150px; }
+        .nav-search button { background: none; border: none; cursor: pointer; font-size: 1.1em; }
+        
+        /* Dropdown */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); z-index: 100; list-style: none; padding: 0; margin: 0; border-radius: 5px; overflow: hidden; margin-top: 8px; }
+        .dropdown-content li a { padding: 12px 16px; display: block; text-align: left; border-bottom: 1px solid #2c3e50; transition: background 0.3s; color: white; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Floating WhatsApp */
+        .float-wa { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: white; border-radius: 50px; padding: 15px 25px; font-size: 1.2em; font-weight: bold; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); z-index: 9999; transition: transform 0.3s; display: flex; align-items: center; gap: 10px; }
+        .float-wa:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6); }
+
+        /* Hero Banner with Transition */
+        .hero { 
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('images/hero-bg.jpg') center/cover; 
+            color: white; 
+            text-align: center; 
+            padding: 100px 20px; 
+            transition: background 1s ease-in-out; 
+        }
+        .hero h1 { font-size: 3.5em; margin: 0 0 15px 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.3em; margin-bottom: 30px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .btn-shop { background-color: #e74c3c; color: white; padding: 12px 25px; text-decoration: none; font-size: 1.2em; font-weight: bold; border-radius: 5px; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); transition: transform 0.3s; display: inline-block; }
+        .btn-shop:hover { transform: translateY(-3px); }
+
+        /* Grid & Sections */
+        .section-title { text-align: center; color: #2c3e50; font-size: 2.2em; margin-top: 50px; margin-bottom: 10px; }
+        .product-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .product-card { background-color: white; border: 1px solid #e0e0e0; border-radius: 8px; width: 280px; padding: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .product-image-real { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; background-color: #ecf0f1; }
+        .product-title { font-size: 1.2em; color: #2c3e50; margin: 15px 0 10px 0; }
+        .product-price { font-size: 1.3em; color: #e74c3c; font-weight: bold; margin-bottom: 15px; }
+        .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1em; margin-bottom: 8px; }
+        .btn-cart { background-color: #27ae60; color: white; }
+        .btn-wishlist { background-color: #ff4757; color: white; }
+
+        /* Testimonials */
+        .testimonials-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; max-width: 1200px; margin: 0 auto 50px auto; }
+        .review-card { background: white; padding: 25px; border-radius: 10px; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #f1c40f; }
+        .stars { color: #f1c40f; font-size: 1.5em; margin-bottom: 10px; }
+        .review-text { font-style: italic; color: #7f8c8d; margin-bottom: 15px; line-height: 1.5; }
+        .reviewer-name { font-weight: bold; color: #2c3e50; }
+
+        /* Footer */
+        .site-footer { background-color: #2c3e50; color: #ecf0f1; padding: 50px 20px 20px; }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+        .footer-column { flex: 1; min-width: 250px; }
+        .footer-column h3 { color: #f1c40f; margin-bottom: 20px; font-size: 1.4em; margin-top:0; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links a { color: #ecf0f1; text-decoration: none; }
+        .footer-bottom { text-align: center; padding-top: 20px; margin-top: 40px; border-top: 1px solid #34495e; font-size: 0.9em; color: #7f8c8d; }
+
+        /* 📱 MOBILE RESPONSIVENESS MAGIC */
+        @media (max-width: 768px) {
+            .main-nav { flex-direction: column; align-items: stretch; padding: 15px; }
+            .nav-links { flex-direction: column; gap: 10px; text-align: center; width: 100%; }
+            .nav-links li { width: 100%; }
+            .nav-links a, .nav-links span.click-link { display: block; padding: 12px; background-color: #34495e; border-radius: 5px; }
+            .nav-search { margin-top: 15px; width: 100%; justify-content: center; }
+            .nav-search input { width: 100%; padding: 10px; border-radius: 20px; }
+            .dropdown-content { position: static; box-shadow: none; display: none; background: #2c3e50; margin-top: 5px; }
+            .dropdown:hover .dropdown-content { display: block; }
+            .hero { padding: 50px 20px; }
+            .hero h1 { font-size: 2.2em; }
+            .hero p { font-size: 1.1em; }
+            .footer-column { text-align: center; }
+            .footer-column h3 { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="products.html">Products ▾</a>
+                <ul class="dropdown-content">
+                    <li><a href="home-furniture.html">Home Furniture</a></li>
+                    <li><a href="office-furniture.html">Office Furniture</a></li>
+                    <li><a href="pharmacy.html">Pharmacy</a></li>
+                    <li><a href="school-furniture.html">School Furniture</a></li>
+                </ul>
+            </li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            
+            <li><span class="click-link" onclick="checkAccess('wishlist.html')">❤️ Wishlist (<span id="wishlistCount">0</span>)</span></li>
+            <li><span class="click-link nav-cart" onclick="checkAccess('cart.html')">🛒 Cart (<span id="cartCount">0</span>)</span></li>
+            
+            <li id="authLink"><a href="login.html" style="color: #3498db;">👤 Login</a></li>
+        </ul>
+        <div class="nav-search">
+            <input type="text" id="siteSearch" placeholder="Search furniture...">
+            <button onclick="executeSearch()">🔍</button>
+        </div>
+    </nav>
+
+    <a href="https://wa.me/256700000000" class="float-wa" target="_blank">💬 Chat with us</a>
+
+    <header class="hero" id="heroBanner">
+        <h1>Welcome to GetFurniture UG</h1>
+        <p>Premium Ugandan craftsmanship built to last a lifetime.</p>
+        <a href="products.html" class="btn-shop">Shop Our Collection</a>
+    </header>
+
+    <h2 class="section-title">Featured Products</h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="images/sofa.jpg" class="product-image-real" alt="Sofa">
+            <h3 class="product-title">Luxury L-Shape Sofa</h3>
+            <div class="product-price">UGX 1,500,000</div>
+            <button class="btn btn-cart" onclick="addToCart('Luxury L-Shape Sofa', 1500000)">🛒 Add to Cart</button>
+            <button class="btn btn-wishlist" onclick="addToWishlist('Luxury L-Shape Sofa', 1500000)">❤️ Save to Wishlist</button>
+        </div>
+        <div class="product-card">
+            <img src="images/dining.jpg" class="product-image-real" alt="Dining Table">
+            <h3 class="product-title">6-Seater Dining Table</h3>
+            <div class="product-price">UGX 2,500,000</div>
+            <button class="btn btn-cart" onclick="addToCart('6-Seater Dining Table', 2500000)">🛒 Add to Cart</button>
+            <button class="btn btn-wishlist" onclick="addToWishlist('6-Seater Dining Table', 2500000)">❤️ Save to Wishlist</button>
+        </div>
+    </div>
+
+    <h2 class="section-title">What Our Clients Say</h2>
+    <div class="testimonials-grid">
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"The craftsmanship on our new office desks is incredible. Delivery was fast, and the wood quality is the best I've seen in Kampala."</p>
+            <div class="reviewer-name">- Sarah K., Business Owner</div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Ordered a custom L-shape sofa and it transformed our living room. Excellent customer service over WhatsApp!"</p>
+            <div class="reviewer-name">- David O., Homeowner</div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>GetFurniture UG</h3>
+                <p>Crafting comfort and elegance for Ugandan spaces.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="faq.html">FAQs</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 GetFurniture UG. All Rights Reserved.</div>
+    </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            updateCounters();
+            startBackgroundSlider();
+        });
+
+        // Sliding Background
+        function startBackgroundSlider() {
+            const heroBanner = document.getElementById('heroBanner');
+            const bgImages = [
+                "linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('images/hero-bg.jpg')",
+                "linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('images/sofa.jpg')",
+                "linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('images/dining.jpg')"
+            ];
+            let currentIndex = 0;
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % bgImages.length;
+                heroBanner.style.background = bgImages[currentIndex] + " center/cover";
+            }, 4000);
+        }
+
+        // Login UI
+        function updateAuthUI() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const currentUser = localStorage.getItem('currentUser');
+            const authLink = document.getElementById('authLink');
+            if (isLoggedIn === 'true' && authLink) {
+                authLink.innerHTML = `<span style="color: #f1c40f; font-weight: bold; margin-right: 10px;">Hi, ${currentUser}!</span><a href="#" onclick="logout()" style="color: #e74c3c;">(Logout)</a>`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            alert("You have been logged out.");
+            window.location.reload();
+        }
+
+        // The Bouncer
+        function checkAccess(page) {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = page;
+            } else {
+                alert("🔒 Please Login to view your Cart or Wishlist.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Search
+        function executeSearch() {
+            let q = document.getElementById('siteSearch').value.toLowerCase();
+            if (q.includes('office') || q.includes('desk') || q.includes('chair')) window.location.href = 'office-furniture.html';
+            else if (q.includes('home') || q.includes('sofa') || q.includes('bed')) window.location.href = 'home-furniture.html';
+            else if (q.includes('school')) window.location.href = 'school-furniture.html';
+            else if (q.includes('pharmacy') || q.includes('shelf')) window.location.href = 'pharmacy.html';
+            else window.location.href = 'products.html';
+        }
+
+        // Counters
+        function updateCounters() {
+            let myCart = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+            let myWishlist = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
+            let totalCartItems = myCart.reduce((total, item) => total + (item.quantity || 1), 0);
+            document.getElementById('cartCount').innerText = totalCartItems;
+            document.getElementById('wishlistCount').innerText = myWishlist.length;
+        }
+
+        // Add to Cart
+        function addToCart(itemName, itemPrice) {
+            let myCart = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+            let existingItem = myCart.find(item => item.name === itemName);
+            
+            if (existingItem) {
+                existingItem.quantity = (existingItem.quantity || 1) + 1;
+                alert("🛒 Added another " + itemName + " to your cart! You now have " + existingItem.quantity + ".");
+            } else {
+                myCart.push({ name: itemName, price: itemPrice, quantity: 1 });
+                alert("🛒 " + itemName + " added to your cart!");
+            }
+            localStorage.setItem('getFurnitureCart', JSON.stringify(myCart));
+            updateCounters();
+        }
+
+        // Add to Wishlist
+        function addToWishlist(itemName, itemPrice) {
+            let myWishlist = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
+            if (!myWishlist.some(item => item.name === itemName)) {
+                myWishlist.push({ name: itemName, price: itemPrice });
+                localStorage.setItem('getFurnitureWishlist', JSON.stringify(myWishlist));
+                updateCounters();
+                alert("❤️ " + itemName + " saved for later!");
+            } else {
+                alert("This item is already in your Wishlist!");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Wishlist | GetFurniture UG</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; }
+        
+        /* Navigation Menu Styles */
+        .main-nav { background-color: #34495e; padding: 12px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 25px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 5px 10px; border-radius: 4px; }
+        .nav-links a:hover { background-color: #e74c3c; }
+        .nav-cart { color: #f1c40f !important; }
+        
+        /* Drop-Down Menu Styles */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); z-index: 100; list-style: none; padding: 0; margin: 0; border-radius: 4px; }
+        .dropdown-content li a { padding: 12px 16px; display: block; text-align: left; border-bottom: 1px solid #2c3e50; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Wishlist Page Styles */
+        .wishlist-container { max-width: 700px; margin: 40px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .wishlist-item { border-bottom: 1px solid #ccc; padding: 15px 0; display: flex; justify-content: space-between; align-items: center; }
+        .btn-add-cart { background-color: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1em; }
+        .btn-add-cart:hover { background-color: #2ecc71; }
+        .btn-remove { background-color: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1em; margin-left: 10px; }
+        .btn-remove:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="products.html">Products ▾</a>
+                <ul class="dropdown-content">
+                    <li><a href="home-furniture.html">Home Furniture</a></li>
+                    <li><a href="office-furniture.html">Office Furniture</a></li>
+                    <li><a href="pharmacy.html">Pharmacy</a></li>
+                    <li><a href="school-furniture.html">School Furniture</a></li>
+                </ul>
+            </li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="wishlist.html">❤️ Wishlist (<span id="wishlistCount">0</span>)</a></li>
+            <li><a href="cart.html" class="nav-cart">🛒 Cart (<span id="cartCount">0</span>)</a></li>
+        </ul>
+    </nav>
+
+    <div class="wishlist-container">
+        <h2>❤️ My Saved Items</h2>
+        <p>Items you saved for later. When you are ready, move them to your cart to checkout!</p>
+        
+        <div id="wishlistItemsList"></div>
+    </div>
+
+<script>
+    // 1. Get memory data to update the menu numbers
+    let cartMemory = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+    let wishlistMemory = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
+    document.getElementById('cartCount').innerText = cartMemory.length;
+    document.getElementById('wishlistCount').innerText = wishlistMemory.length;
+
+    // 2. Load the Wishlist Items onto the screen
+    let wishlistListDiv = document.getElementById('wishlistItemsList');
+
+    if (wishlistMemory.length === 0) {
+        wishlistListDiv.innerHTML = "<p style='color: #7f8c8d; font-style: italic;'>Your wishlist is currently empty. Go find some beautiful furniture!</p>";
+    } else {
+        wishlistMemory.forEach(function(item, index) {
+            wishlistListDiv.innerHTML += `
+                <div class='wishlist-item'>
+                    <div>
+                        <strong style="font-size: 1.2em;">${item.name}</strong><br>
+                        <span style="color: #e74c3c; font-weight: bold;">UGX ${item.price.toLocaleString('en-US')}</span>
+                    </div>
+                    <div style="display: flex;">
+                        <button class="btn-add-cart" onclick="moveToCart(${index})">🛒 Add to Cart</button>
+                        <button class="btn-remove" onclick="removeWishlistItem(${index})">🗑️ Remove</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // --- ENGINES ---
+
+    // Engine to permanently remove from Wishlist
+    function removeWishlistItem(index) {
+        let currentWishlist = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
+        currentWishlist.splice(index, 1);
+        localStorage.setItem('getFurnitureWishlist', JSON.stringify(currentWishlist));
+        window.location.reload(); // Refresh to show it's gone
+    }
+
+    // Engine to move an item from Wishlist straight to the Cart
+    function moveToCart(index) {
+        let currentWishlist = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
+        let itemToMove = currentWishlist[index];
+
+        // 1. Add to Cart Memory
+        let cart = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+        cart.push({ name: itemToMove.name, price: itemToMove.price });
+        localStorage.setItem('getFurnitureCart', JSON.stringify(cart));
+        
+        // 2. Remove from Wishlist Memory
+        currentWishlist.splice(index, 1);
+        localStorage.setItem('getFurnitureWishlist', JSON.stringify(currentWishlist));
+        
+        alert(itemToMove.name + " moved back to your cart!");
+        window.location.reload(); // Refresh the page
+    }
+</script>
+
+</body>
+</html>

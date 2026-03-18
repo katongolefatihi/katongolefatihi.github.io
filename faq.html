@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | GetFurniture UG</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; color: #333; }
+        
+        /* Nav Menu */
+        .main-nav { background-color: #2c3e50; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: center; }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 8px 12px; }
+        .nav-links a:hover { background-color: #e74c3c; border-radius: 5px; }
+
+        /* FAQ Header & Container */
+        .faq-header { background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%); color: white; padding: 50px 20px; text-align: center; }
+        .faq-header h1 { margin: 0; font-size: 2.5em; }
+        .faq-container { max-width: 800px; margin: 50px auto; padding: 0 20px; min-height: 50vh; }
+
+        /* The Dropdown Questions (Accordion) */
+        details { background: white; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        summary { font-size: 1.2em; font-weight: bold; color: #2c3e50; padding: 20px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #3498db; }
+        summary::-webkit-details-marker { display: none; }
+        summary:after { content: '+'; font-size: 1.5em; color: #e74c3c; }
+        details[open] summary:after { content: '-'; }
+        .answer { padding: 0 20px 20px 20px; color: #555; line-height: 1.6; font-size: 1.1em; border-top: 1px solid #f1f2f6; margin-top: 10px; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+        <ul class="nav-links">
+            <li><a href="index.html">← Back to Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <div class="faq-header">
+        <h1>Frequently Asked Questions</h1>
+        <p>Everything you need to know about ordering, delivery, and custom furniture.</p>
+    </div>
+
+    <div class="faq-container">
+        
+        <details>
+            <summary>Do you deliver outside Kampala?</summary>
+            <div class="answer">Yes! We deliver nationwide across Uganda. Delivery within Kampala is typically a flat fee, while upcountry deliveries are calculated based on the distance and the size of your order. Please contact us on WhatsApp for an exact quote to your district.</div>
+        </details>
+
+        <details>
+            <summary>Do you require a deposit before starting work?</summary>
+            <div class="answer">For all custom orders and bulk institutional furniture (like schools or pharmacies), we require a 60% commitment deposit to begin purchasing raw materials. The remaining 40% is paid upon delivery and your full satisfaction.</div>
+        </details>
+
+        <details>
+            <summary>Can I request a custom design?</summary>
+            <div class="answer">Absolutely. We have skilled carpenters who can bring your vision to life. If you have a picture of a sofa, desk, or cabinet you saw online, send it to our WhatsApp and we will give you a quotation to build it locally.</div>
+        </details>
+
+        <details>
+            <summary>What kind of wood do you use?</summary>
+            <div class="answer">We pride ourselves on durability. The majority of our premium furniture is crafted using treated Ugandan Mahogany and Mvule, ensuring it resists termites and lasts for generations.</div>
+        </details>
+
+    </div>
+
+</body>
+</html>

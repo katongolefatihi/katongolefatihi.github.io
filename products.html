@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products | GetFurniture UG</title>
+    <style>
+
+/* Navigation Styling */
+.main-nav { 
+    background-color: #2c3e50; 
+    padding: 12px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+}
+.nav-links { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 15px; }
+.nav-links a { color: white; text-decoration: none; font-weight: bold; padding: 8px 10px; border-radius: 4px; }
+.nav-links a:hover { background-color: #e74c3c; }
+
+/* Dropdown */
+.dropdown { position: relative; }
+.dropdown-content { display: none; position: absolute; background: #34495e; min-width: 180px; border-radius: 4px; box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown-content li a { display: block; padding: 10px; border-bottom: 1px solid #2c3e50; }
+
+/* Search Bar */
+.nav-search { display: flex; background: white; border-radius: 20px; padding: 2px 10px; }
+.nav-search input { border: none; outline: none; padding: 5px; width: 150px; border-radius: 20px; }
+.nav-search button { background: none; border: none; cursor: pointer; }
+
+/* Auth Text */
+#authLink span { color: #f1c40f; font-size: 0.9em; }
+
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; color: #333; }
+        .main-nav { background-color: #2c3e50; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000; }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 25px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 8px 12px; border-radius: 5px; transition: background 0.3s ease; }
+        .nav-links a:hover { background-color: #e74c3c; }
+        .nav-cart { color: #f1c40f !important; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); z-index: 100; list-style: none; padding: 0; margin: 0; border-radius: 5px; overflow: hidden; margin-top: 8px; }
+        .dropdown-content li a { padding: 12px 16px; display: block; text-align: left; border-bottom: 1px solid #2c3e50; transition: background 0.3s; color: white; }
+        .dropdown:hover .dropdown-content { display: block; }
+        
+        .category-header { background: linear-gradient(135deg, #2c3e50 0%, #e74c3c 100%); color: white; padding: 40px 20px; text-align: center; }
+        .category-header h1 { margin: 0; font-size: 2.5em; }
+        .category-header p { font-size: 1.1em; opacity: 0.9; margin-top: 10px; }
+
+        /* Directory Grid Styles */
+        .directory-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; padding: 50px 20px; max-width: 1000px; margin: 0 auto; }
+        .directory-card { background-color: white; border-radius: 10px; width: 400px; padding: 30px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; color: inherit; display: block; border-top: 5px solid #3498db; }
+        .directory-card:hover { transform: translateY(-8px); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
+        .directory-card h2 { color: #2c3e50; margin-top: 0; font-size: 1.8em; }
+        .directory-card p { color: #7f8c8d; font-size: 1.1em; line-height: 1.5; }
+        .btn-view { display: inline-block; margin-top: 15px; background-color: #34495e; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; transition: background 0.3s; }
+        .directory-card:hover .btn-view { background-color: #e74c3c; }
+
+        /* Footer Styles */
+        .site-footer { background-color: #2c3e50; color: #ecf0f1; padding: 50px 20px 20px; margin-top: 60px; }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+        .footer-column { flex: 1; min-width: 250px; }
+        .footer-column h3 { color: #f1c40f; margin-top: 0; margin-bottom: 20px; font-size: 1.4em; }
+        .footer-column p { line-height: 1.6; font-size: 0.95em; color: #bdc3c7; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #ecf0f1; text-decoration: none; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #e74c3c; }
+        .footer-bottom { text-align: center; padding-top: 20px; margin-top: 40px; border-top: 1px solid #34495e; font-size: 0.9em; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav">
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+            <a href="products.html">Products ▾</a>
+            <ul class="dropdown-content">
+                <li><a href="home-furniture.html">Home Furniture</a></li>
+                <li><a href="office-furniture.html">Office Furniture</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="school-furniture.html">School Furniture</a></li>
+            </ul>
+        </li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        
+        <li><a href="#" onclick="checkAccess('wishlist.html')">❤️ Wishlist (<span id="wishlistCount">0</span>)</a></li>
+        <li><a href="#" onclick="checkAccess('cart.html')" class="nav-cart">🛒 Cart (<span id="cartCount">0</span>)</a></li>
+
+        <li id="authLink"><a href="login.html" style="color: #3498db;">👤 Login</a></li>
+    </ul>
+    
+    <div class="nav-search">
+        <input type="text" id="siteSearch" placeholder="Search furniture...">
+        <button onclick="executeSearch()">🔍</button>
+    </div>
+</nav>
+
+    <div class="category-header">
+        <h1>Our Showroom</h1>
+        <p>Select a category below to view our complete collections.</p>
+    </div>
+
+    <div class="directory-grid">
+        
+        <a href="home-furniture.html" class="directory-card" style="border-top-color: #3498db;">
+            <h2>🛋️ Home Furniture</h2>
+            <p>Transform your living spaces with our premium sofas, dining tables, beds, and TV stands.</p>
+            <span class="btn-view">Browse Home →</span>
+        </a>
+
+        <a href="office-furniture.html" class="directory-card" style="border-top-color: #2ecc71;">
+            <h2>💼 Office Furniture</h2>
+            <p>Professional, ergonomic, and durable desks and chairs for your productive workspace.</p>
+            <span class="btn-view">Browse Office →</span>
+        </a>
+
+        <a href="pharmacy.html" class="directory-card" style="border-top-color: #16a085;">
+            <h2>⚕️ Pharmacy Furniture</h2>
+            <p>Specialized dispensing counters, glass shelving, and secure medicine cabinets.</p>
+            <span class="btn-view">Browse Pharmacy →</span>
+        </a>
+
+        <a href="school-furniture.html" class="directory-card" style="border-top-color: #f39c12;">
+            <h2>🏫 School Furniture</h2>
+            <p>Heavy-duty, long-lasting student desks, teacher desks, and library shelving.</p>
+            <span class="btn-view">Browse School →</span>
+        </a>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>GetFurniture UG</h3>
+                <p>Crafting comfort and elegance for Ugandan spaces. We specialize in high-quality, locally crafted home, office, school, and pharmacy furniture built to last a lifetime.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="cart.html">🛒 View Cart</a></li>
+                    <li><a href="wishlist.html">❤️ My Wishlist</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>📍 Kampala, Uganda<br><br>📞 +256 700 000 000<br><br>✉️ sales@getfurniture.ug</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 GetFurniture UG. All Rights Reserved. Built with pride in Uganda.
+        </div>
+    </footer>
+
+    <script>
+
+// Run the Login check the moment the page loads
+window.addEventListener('DOMContentLoaded', updateAuthUI);
+
+function updateAuthUI() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const currentUser = localStorage.getItem('currentUser');
+    const authLink = document.getElementById('authLink');
+
+    if (isLoggedIn === 'true' && authLink) {
+        // Change "Login" to "Hi, Name! (Logout)"
+        authLink.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="color: #f1c40f; font-weight: bold;">Hi, ${currentUser}!</span>
+                <a href="#" onclick="logout()" style="color: #e74c3c; font-size: 0.8em; background: rgba(231, 76, 60, 0.1);">Logout</a>
+            </div>
+        `;
+    }
+}
+
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    alert("You have been logged out.");
+    window.location.href = 'index.html';
+}
+
+function checkAccess(page) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        window.location.href = page;
+    } else {
+        alert("🔒 Access Denied: Please Login to view your Cart or Wishlist.");
+        window.location.href = 'login.html';
+    }
+}
+
+// Search Engine
+function executeSearch() {
+    let q = document.getElementById('siteSearch').value.toLowerCase();
+    if (q.includes('office') || q.includes('desk')) window.location.href = 'office-furniture.html';
+    else if (q.includes('home') || q.includes('sofa')) window.location.href = 'home-furniture.html';
+    else if (q.includes('school')) window.location.href = 'school-furniture.html';
+    else if (q.includes('pharmacy')) window.location.href = 'pharmacy.html';
+    else window.location.href = 'products.html';
+}
+
+
+        let currentCartCount = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+        let currentWishlistCount = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
+        document.getElementById('cartCount').innerText = currentCartCount.length;
+        document.getElementById('wishlistCount').innerText = currentWishlistCount.length;
+
+function checkAccess(page) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        window.location.href = page;
+    } else {
+        alert("🔒 You must be logged in to view your " + (page.includes('cart') ? "Cart" : "Wishlist") + "!");
+        window.location.href = 'login.html';
+    }
+}
+
+    </script>
+
+</body>
+</html>
