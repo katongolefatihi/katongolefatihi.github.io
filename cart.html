@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart | GetFurniture UG</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; padding: 0; margin: 0; overflow-x: hidden; }
         
         /* Navigation Menu */
-        .main-nav { background-color: #2c3e50; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; }
+        .main-nav { background-color: #2c3e50; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 1000; }
         .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 8px 12px; border-radius: 5px; }
-        .nav-links a:hover { background-color: #e74c3c; }
+        .nav-links a, .nav-links span.click-link { color: white; text-decoration: none; font-size: 1.1em; font-weight: bold; padding: 8px 12px; border-radius: 5px; transition: background 0.3s ease; cursor: pointer; }
+        .nav-links a:hover, .nav-links span.click-link:hover { background-color: #e74c3c; }
+        .nav-cart { color: #f1c40f !important; }
+        
+        .nav-search { display: flex; align-items: center; background: white; border-radius: 20px; padding: 2px 10px; }
+        .nav-search input { border: none; outline: none; padding: 5px; border-radius: 20px; width: 150px; }
+        .nav-search button { background: none; border: none; cursor: pointer; font-size: 1.1em; }
+        
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content { display: none; position: absolute; background-color: #34495e; min-width: 220px; z-index: 100; list-style: none; padding: 0; margin: 0; border-radius: 5px; margin-top: 8px; }
         .dropdown-content li a { padding: 12px 16px; display: block; border-bottom: 1px solid #2c3e50; }
@@ -40,6 +47,26 @@
         .payment-instructions { display: none; background: #f4f7f6; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 5px solid #2c3e50; }
         .payment-instructions input { width: 100%; padding: 12px; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         .btn-confirm { background-color: #2c3e50; color: white; padding: 15px; border: none; width: 100%; border-radius: 5px; font-weight: bold; margin-top: 15px; cursor: pointer; font-size: 1.1em; }
+
+        /* 📱 MOBILE RESPONSIVENESS MAGIC */
+        @media (max-width: 768px) {
+            .main-nav { flex-direction: column; padding: 10px; } 
+            .nav-links { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 10px; width: 100%; padding-bottom: 5px; }
+            .nav-links::-webkit-scrollbar { display: none; } 
+            .nav-links li { flex: 0 0 auto; width: auto; }
+            .nav-links a, .nav-links span.click-link { display: inline-block; padding: 8px 12px; background-color: transparent; font-size: 0.95em; white-space: nowrap; }
+            .nav-search { margin-top: 10px; width: 100%; justify-content: center; }
+            .nav-search input { width: 100%; padding: 10px; border-radius: 20px; }
+            .dropdown-content { position: static; box-shadow: none; display: none; background: #2c3e50; margin-top: 5px; }
+            .dropdown:hover .dropdown-content { display: block; }
+            
+            .cart-container { margin: 20px; padding: 20px; }
+            .cart-item { flex-direction: column; align-items: flex-start; gap: 15px; text-align: left; }
+            .cart-item > div { width: 100%; text-align: left !important; }
+            .btn-remove { width: 100%; padding: 12px; margin-top: 10px; }
+            .payment-options { flex-direction: column; }
+            .pay-btn { padding: 15px; font-size: 1.1em; }
+        }
     </style>
 </head>
 <body>
@@ -56,10 +83,19 @@
                     <li><a href="school-furniture.html">School Furniture</a></li>
                 </ul>
             </li>
-            <li><a href="wishlist.html">❤️ Wishlist</a></li>
-            <li><a href="cart.html" style="color: #f1c40f;">🛒 Cart (<span id="cartCount">0</span>)</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            
+            <li><span class="click-link" onclick="checkAccess('wishlist.html')">❤️ Wishlist (<span id="wishlistCount">0</span>)</span></li>
+            <li><span class="click-link nav-cart" onclick="checkAccess('cart.html')">🛒 Cart (<span id="cartCount">0</span>)</span></li>
+            
             <li id="authLink"><a href="login.html" style="color: #3498db;">👤 Login</a></li>
         </ul>
+        <div class="nav-search">
+            <input type="text" id="siteSearch" placeholder="Search furniture...">
+            <button onclick="executeSearch()">🔍</button>
+        </div>
     </nav>
 
     <div class="cart-container">
@@ -115,7 +151,26 @@
         window.location.href = 'index.html';
     }
 
+    function checkAccess(page) {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = page;
+        } else {
+            alert("🔒 Please Login to view your Cart or Wishlist.");
+            window.location.href = 'login.html';
+        }
+    }
+
+    function executeSearch() {
+        let q = document.getElementById('siteSearch').value.toLowerCase();
+        if (q.includes('office') || q.includes('desk') || q.includes('chair')) window.location.href = 'office-furniture.html';
+        else if (q.includes('home') || q.includes('sofa') || q.includes('bed')) window.location.href = 'home-furniture.html';
+        else if (q.includes('school')) window.location.href = 'school-furniture.html';
+        else if (q.includes('pharmacy') || q.includes('shelf')) window.location.href = 'pharmacy.html';
+        else window.location.href = 'products.html';
+    }
+
     let cartMemory = JSON.parse(localStorage.getItem('getFurnitureCart')) || [];
+    let myWishlist = JSON.parse(localStorage.getItem('getFurnitureWishlist')) || [];
     let grandTotal = 0;
     let selectedPaymentMethod = "";
 
@@ -127,9 +182,10 @@
         
         let totalCartItems = cartMemory.reduce((total, item) => total + (item.quantity || 1), 0);
         document.getElementById('cartCount').innerText = totalCartItems;
+        document.getElementById('wishlistCount').innerText = myWishlist.length;
 
         if (cartMemory.length === 0) {
-            cartListDiv.innerHTML = "<p>Your cart is empty.</p>";
+            cartListDiv.innerHTML = "<p style='text-align: center; color: #7f8c8d;'>Your cart is currently empty. Go add some beautiful furniture!</p>";
             checkoutBtn.style.display = "none";
         } else {
             cartListDiv.innerHTML = "";
