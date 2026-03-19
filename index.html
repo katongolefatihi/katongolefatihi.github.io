@@ -91,6 +91,30 @@
             .footer-column { text-align: center; }
             .footer-column h3 { margin-top: 20px; }
         }
+
+/* 📱 Download App Button Styles */
+        .btn-download { 
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); 
+            color: white; 
+            padding: 12px 25px; 
+            text-decoration: none; 
+            font-size: 1.2em; 
+            font-weight: bold; 
+            border-radius: 5px; 
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4); 
+            transition: transform 0.3s; 
+            display: inline-block; 
+            margin-top: 15px;
+            margin-left: 10px;
+        }
+        .btn-download:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6); }
+        
+        /* Make it stack nicely on mobile screens */
+        @media (max-width: 768px) {
+            .btn-download { margin-left: 0; display: block; width: 80%; margin: 15px auto 0 auto; box-sizing: border-box; }
+            .btn-shop { display: block; width: 80%; margin: 0 auto; box-sizing: border-box; }
+        }
+
     </style>
 </head>
 <body>
@@ -128,6 +152,15 @@
         <h1>Welcome to GetFurniture UG</h1>
         <p>Premium Ugandan craftsmanship built to last a lifetime.</p>
         <a href="products.html" class="btn-shop">Shop Our Collection</a>
+
+<header class="hero" id="heroBanner">
+        <h1>Welcome to GetFurniture UG</h1>
+        <p>Premium Ugandan craftsmanship built to last a lifetime.</p>
+        <a href="products.html" class="btn-shop">Shop Our Collection</a>
+        <a href="GetFurniture.apk" class="btn-download" download>📱 Download Android App</a>
+    </header>
+
+
     </header>
 
     <h2 class="section-title">Featured Products</h2>
